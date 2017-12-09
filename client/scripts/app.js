@@ -1,33 +1,50 @@
+
 // YOUR CODE HERE:
 var app = {
 
   init: function() {
+    
+    $(document).ready(function() {
+      $('body').on('click', '#send', function(event) {
+        var message = {
+          username: window.location.search.slice(10),
+          text: event.target.previousElementSibling.value,
+          roomname: ''
+        };
+        app.send(message);
+        $('#MessageBox').val('');
+      }); 
 
+      $('body').on('click', '.username', function(event) {
+        app.handleUsernameClick();
+      });
+    });
+    
     app.fetch();
 
-    $('#send .submit').on('click', function(event) {
-      app.handleSubmit(window.location.search.slice(10), event.value, roomname);
-    }); 
-    
-    $('body').on('click', '.username', function(event) {
-      app.handleUsernameClick();
-    });
-      
+    setInterval(function() {
+      app.fetch();
+    }, 30000);
   }, 
 
-  handleSubmit: function(username, text, room) {
-    app.send(text);
-  },
+  // handleSubmit: function(username, text, room) {
+  //   app.send(text);
+  // },
   
   fetch: function() {
     $.ajax({
       // This is the url you should use to communicate with the parse API server.
       type: 'GET',
-      url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
+      data: {'order': '-createdAt'},
+      url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages/',
       contentType: 'application/json',
+      // limit: 1000,
       success: function (messages) {
         for (var i = 0; i < messages.results.length; i++) {
           var currentMessage = messages.results[i]; 
+          if (currentMessage.text) {
+            currentMessage.text = app.escapeHTML(currentMessage.text);
+          }
           app.renderMessage(currentMessage);
         }
       },
@@ -36,16 +53,23 @@ var app = {
         console.error('Server not found');
       }
     });
-  
   }, 
 
-  send: function(message) {
+  escapeHTML: function(unsafeMessage) {
+    return unsafeMessage
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt')
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  },
 
+  send: function(message) {
     $.ajax({
       // This is the url you should use to communicate with the parse API server.
       url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
       type: 'POST',
-      data: message,
+      data: JSON.stringify(message),
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Message sent');
@@ -87,6 +111,7 @@ var app = {
 };
 
 app.init();
+
 
 
 
