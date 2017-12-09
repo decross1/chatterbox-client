@@ -43,7 +43,13 @@ var app = {
         for (var i = 0; i < messages.results.length; i++) {
           var currentMessage = messages.results[i]; 
           if (currentMessage.text) {
-            currentMessage.text = app.escapeHTML(currentMessage.text);
+            currentMessage.text = app.escapeHTML(currentMessage.text);  
+          }
+          if (currentMessage.username) {
+            currentMessage.username = app.escapeHTML(currentMessage.username);
+          }
+          if (currentMessage.roomname) {
+            currentMessage.roomname = app.escapeHTML(currentMessage.roomname);
           }
           app.renderMessage(currentMessage);
         }
