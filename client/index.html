@@ -26,16 +26,10 @@
   <body>
     <div id="main">
       <h1>chatterbox</h1>
-      <!-- Your HTML goes here! -->
-<!--       <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn">Dropdown</button>
-        <div id="myDropdown" class="dropdown-content">
-          <a href="#">Link 1</a>
-          <a href="#">Link 2</a>
-          <a href="#">Link 3</a>
-        </div>
-      </div> -->
-      <div id="roomSelect">Rooms: </div>
+      <div id ='rooms' class="dropdown">
+        <button onclick="app.showRooms()" class="dropbtn">Dropdown</button>
+        <div id="dropDown" class="dropdown-content"></div>
+      </div>
       <textarea id="MessageBox" name="content" rows="2" cols="50"></textarea>
       <button id="send"> Submit </button>
       <aside class='username'></aside>

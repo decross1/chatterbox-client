@@ -3,13 +3,14 @@
 var app = {
 
   init: function() {
-    
+    var roomFilter;    
+
     $(document).ready(function() {
       $('body').on('click', '#send', function(event) {
         var message = {
           username: window.location.search.slice(10),
           text: event.target.previousElementSibling.value,
-          roomname: ''
+          roomname: 'specialroom'
         };
         app.send(message);
         $('#MessageBox').val('');
@@ -18,30 +19,61 @@ var app = {
       $('body').on('click', '.username', function(event) {
         app.handleUsernameClick();
       });
+
+      $('#dropDown').on('click', function(event) {
+        roomFilter = event.target.id;
+        app.fetch(roomFilter);
+      });
+
+      window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+          var dropdowns = document.getElementsByClassName('dropdown-content');
+          for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+              openDropdown.classList.remove('show');
+            }
+          }
+        }
+      };
+      
     });
     
     app.fetch();
 
     setInterval(function() {
-      app.fetch();
+      app.fetch(roomFilter);
+      
     }, 30000);
   }, 
 
-  // handleSubmit: function(username, text, room) {
-  //   app.send(text);
-  // },
-  
-  fetch: function() {
-    $.ajax({
+  showRooms: function() {
+    document.getElementById('dropDown').classList.toggle('show');
+  },
+
+  roomNames: {},
+
+  fetch: function(roomFilter) {
+    var data = {'order': '-createdAt'};
+    var dataByRoomName = {'order': '-createdAt', 'where': {'roomname': roomFilter}};
+    if (!roomFilter) {
+      dataByRoomName = data;
+    } 
+
+    $.ajax({  
       // This is the url you should use to communicate with the parse API server.
       type: 'GET',
-      data: {'order': '-createdAt'},
+      data: dataByRoomName,
       url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages/',
       contentType: 'application/json',
-      // limit: 1000,
       success: function (messages) {
+        app.clearMessages();
+
         for (var i = 0; i < messages.results.length; i++) {
           var currentMessage = messages.results[i]; 
+          if (currentMessage.username === 'sp00ky%20ghost' || currentMessage.roomname === 'All') {
+            continue;
+          }
           if (currentMessage.text) {
             currentMessage.text = app.escapeHTML(currentMessage.text);  
           }
@@ -50,12 +82,15 @@ var app = {
           }
           if (currentMessage.roomname) {
             currentMessage.roomname = app.escapeHTML(currentMessage.roomname);
+            if (app.roomNames[currentMessage.roomname] === undefined) {
+              app.roomNames[currentMessage.roomname] = 1;
+            }
           }
           app.renderMessage(currentMessage);
         }
+        app.renderRooms(app.roomNames);
       },
       error: function () {
-        // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
         console.error('Server not found');
       }
     });
@@ -92,27 +127,18 @@ var app = {
   }, 
 
   renderMessage: function (message) {
-    $('#chats').append('<p>' + message.username + ':' + message.text + '</p>');
+    $('#chats').append('<p roomName=' + message.roomname + '>' + message.username + ':' + message.text + '</p>');
   }, 
   
-  renderRoom: function (room) {
-    $('#roomSelect').append('<p>' + room + '</p>');
+  renderRooms: function (rooms) {
+    $('#dropDown').empty();
+    for (var keys in rooms) {
+      $('#dropDown').append('<li id=' + keys + '>' + keys + '</li>');
+    }
   },
 
   handleUsernameClick: function () {
     console.log('ive been clicked');
-    // $.ajax({
-    //   url: 'http://parse.sfm6.hackreactor.com/chatterbox/users',
-    //   type: 'PUT',
-    //   data: username,
-    //   contentType: 'application/json',
-    //   success: function () {
-    //     console.log('friend added!');
-    //   },
-    //   error: function () {
-    //     console.error('failed to add friend');
-    //   }
-    // });
   }
 };
 
