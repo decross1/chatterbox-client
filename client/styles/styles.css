@@ -176,8 +176,10 @@ button {
 
 #messageButtons {
     padding: 2px;
-    margin-bottom: 10px;
+    margin-top: 2px;
+    margin-bottom: 20px;
     align-content: center;
+    text-align: center
 }
 
 li {
@@ -199,4 +201,13 @@ li:hover, li:focus {
     text-transform: uppercase;
     white-space: normal;
 }
+
+hr {
+  border: none;
+  height: 100px;
+  color: #333;
+  background-color: #333; 
+  align-self: center;
+}
+
 
