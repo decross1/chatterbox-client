@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>chatterbox</title>
     <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
 
     <!-- dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -26,13 +28,18 @@
   <body>
     <div id="main">
       <h1>chatterbox</h1>
+        <textarea id="MessageBox" autofocus="autofocus" name="content" rows="2" cols="50"></textarea>
+        <div id="messageButtons">
+          <button id="send"> Submit </button>
+          <button id="clear"> Clear </button>
+        </div>
       <div id ='rooms' class="dropdown">
-        <button onclick="app.showRooms()" class="dropbtn">Dropdown</button>
-        <div id="dropDown" class="dropdown-content"></div>
+        <button onclick="app.showRooms()" class="dropbtn">Rooms</button>
+        <div id="dropDown" class="dropdown-content"></div><input id="newRoomName" placeholder="Search for room..."> <button id="addNewRoom">Go</button>
       </div>
-      <textarea id="MessageBox" name="content" rows="2" cols="50"></textarea>
-      <button id="send"> Submit </button>
-      <aside class='username'></aside>
+      
+      
+      
     </div>
     <aside id="chats"></aside>
   </body>

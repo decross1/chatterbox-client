@@ -17,11 +17,15 @@ body {
 
 #main h1 {
     margin-top: 0;
-    font-size: 35px;
+    font-size: 80px;
     margin-bottom: 5px;
     padding: 5px;
+    font-family: Lucida;
 }
 
+#main {
+    padding-bottom: 25px;
+}
 #main h1 span {
     font-style:italic;
 }
@@ -59,10 +63,21 @@ form input[type=text] {
     padding: 5px;
 }
 
-.chat {
+
+button {
+  border: 2px;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: black;
+  border-width: 0.1px;
+  background-color: white;
+}
+
+.chats {
     padding: 5px;
     margin-bottom: 5px;
     background-color: #eee;
+    border-style: dotted;
 }
 
 .chat .username {
@@ -84,21 +99,36 @@ form input[type=text] {
 }
 
 .friend {
-    color: #fff;
-    background-color: #0090da;
+    background-color: #b3ffb3;
 }
 
 .dropbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
+    background-color: #b3e6ff;
+    font-size: 14px;
+    padding: 10px;
+    line-height: 1;
+    border-radius: 500px;
+    transition-property: background-color,border-color,color,box-shadow,filter;
+    transition-duration: .3s;
+    border-width: 0;
+    letter-spacing: 2px;
+    min-width: 160px;
+    text-transform: uppercase;
+    white-space: normal;
 }
 
 .dropbtn:hover, .dropbtn:focus {
-    background-color: #3e8e41;
+    background-color: #4dc3ff;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 500px;
+    transition-property: background-color,border-color,color,box-shadow,filter;
+    transition-duration: .3s;
+    border-width: 0;
+    letter-spacing: 2px;
+    min-width: 160px;
+    text-transform: uppercase;
+    white-space: normal;
 }
 
 .dropdown {
@@ -126,3 +156,47 @@ form input[type=text] {
 .dropdown a:hover {background-color: #f1f1f1}
 
 .show {display:block;}
+
+.friend {
+  font-weight: bold;
+}
+
+.message {
+    border-style: solid;
+    border-width: 1px;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.username {
+    font-weight: bold;
+    font-style: italic;
+    align-content: left;
+}
+
+#messageButtons {
+    padding: 2px;
+    margin-bottom: 10px;
+    align-content: center;
+}
+
+li {
+  list-style-type: none; 
+  margin-left: 10px; 
+  font-family: Lucida;  
+  font-size: 18px;
+}
+
+li:hover, li:focus {
+    font-size: 22px;
+    line-height: 1;
+    border-radius: 500px;
+    transition-property: background-color,border-color,color,box-shadow,filter;
+    transition-duration: .3s;
+    border-width: 0;
+    letter-spacing: 2px;
+    min-width: 160px;
+    text-transform: uppercase;
+    white-space: normal;
+}
+

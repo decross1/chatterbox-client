@@ -10,18 +10,38 @@ var app = {
         var message = {
           username: window.location.search.slice(10),
           text: event.target.previousElementSibling.value,
-          roomname: 'specialroom'
+          roomname: roomFilter || 'coolpeopleonly'
         };
         app.send(message);
         $('#MessageBox').val('');
+        app.fetch(roomFilter);
       }); 
 
       $('body').on('click', '.username', function(event) {
-        app.handleUsernameClick();
+        alert('do you want to add' + event.target.textContent + 'as a friend?');
+        app.friends[event.target.textContent] = 1;
+        app.fetch();
       });
 
       $('#dropDown').on('click', function(event) {
         roomFilter = event.target.id;
+        app.fetch(roomFilter);
+      });
+
+      $('#clear').on('click', function(event) {
+        $('#MessageBox').val('');
+      });
+
+      $('#addNewRoom').on('click', function(event) {
+        console.log('new room created');
+        var message = {
+          username: window.location.search.slice(10),
+          text: 'new room',
+          roomname: event.target.previousElementSibling.value
+        };
+        app.send(message);
+        $('#newRoomName').val('');
+        roomFilter = message.roomname;
         app.fetch(roomFilter);
       });
 
@@ -50,7 +70,8 @@ var app = {
   showRooms: function() {
     document.getElementById('dropDown').classList.toggle('show');
   },
-
+  
+  friends: {},
   roomNames: {},
 
   fetch: function(roomFilter) {
@@ -127,13 +148,17 @@ var app = {
   }, 
 
   renderMessage: function (message) {
-    $('#chats').append('<p roomName=' + message.roomname + '>' + message.username + ':' + message.text + '</p>');
+    var $messageTemplate = $('<p class="message"><span class="username">' + message.username + '</span><span>: ' + message.text + '</span></p>');
+    if (app.friends[message.username]) {
+      $messageTemplate.addClass('friend');
+    }
+    $('#chats').append($messageTemplate);
   }, 
   
   renderRooms: function (rooms) {
     $('#dropDown').empty();
     for (var keys in rooms) {
-      $('#dropDown').append('<li id=' + keys + '>' + keys + '</li>');
+      $('#dropDown').append('<li class="room" id=' + keys + '>' + keys + '</li>');
     }
   },
 
